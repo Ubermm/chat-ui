@@ -38,7 +38,7 @@ FROM node:20-slim AS local_db_false
 FROM node:20-slim AS local_db_true
 
 RUN apt-get update \
-    && apt-get install -y gnupg curl \
+    && apt-get install -y gnupg curl dos2unix \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy MongoDB binaries from mongo stage
@@ -67,7 +67,8 @@ ENV HOME=/home/user \
 
 WORKDIR /app
 
-RUN dos2unix /app/entrypoint.sh  # Convert entrypoint.sh to Unix format
+# Convert entrypoint.sh to Unix format if needed
+RUN dos2unix /app/entrypoint.sh > /dev/null 2>&1 || true
 
 RUN touch /app/.env.local
 COPY package.json /app/package.json
