@@ -1,6 +1,6 @@
 version: v1.1.0
 steps:
-  - build: -t $Registry/backstage:$ID -f packages/backend/Dockerfile .
+  - build: -t $Registry/backstage:$ID -f Dockerfile .
     env: 
       - DOCKER_BUILDKIT=1
   - push: 
