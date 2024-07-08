@@ -76,13 +76,11 @@ COPY .env /app/.env
 COPY entrypoint.sh /app/entrypoint.sh
 COPY gcp-*.json /app/
 
-# Ensure the script is executable and then run it
-RUN /bin/bash -c "chmod +x /app/entrypoint.sh"
-
 USER root
 
 RUN npx playwright install-deps
+# Ensure the script is executable and then run it
+RUN /bin/bash -c "chmod +x /app/entrypoint.sh"
 
 USER user
-
 CMD ["/bin/bash", "-c", "/app/entrypoint.sh"]
