@@ -67,7 +67,6 @@ ENV HOME=/home/user \
 
 WORKDIR /app
 
-RUN sed -i 's/\r$//' /app/entrypoint.sh  # Fix line endings issue
 RUN dos2unix /app/entrypoint.sh  # Convert entrypoint.sh to Unix format
 
 RUN touch /app/.env.local
