@@ -26,32 +26,11 @@ RUN npm run build
 # MongoDB stage
 FROM mongo:latest AS mongo
 
-# Image used if INCLUDE_DB is false
-FROM node:20-slim AS local_db_false
-
-# Image used if INCLUDE_DB is true
-FROM node:20-slim AS local_db_true
-
-RUN apt-get update \
-    && apt-get install -y gnupg curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy MongoDB binaries from mongo stage
-COPY --from=mongo /usr/bin/mongo* /usr/bin/
-
-ENV MONGODB_URL=mongodb://localhost:27017
-RUN mkdir -p /data/db \
-    && chown -R 1000:1000 /data/db
-
 # Final image stage
-FROM local_db_${INCLUDE_DB} AS final
+FROM node:20-slim AS final
 
 ARG INCLUDE_DB=false
 ENV INCLUDE_DB=${INCLUDE_DB}
-
-ARG APP_BASE=
-ARG PUBLIC_APP_COLOR=black
-ENV BODY_SIZE_LIMIT=15728640
 
 RUN npm install -g dotenv-cli
 
