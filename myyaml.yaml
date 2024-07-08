@@ -1,5 +1,9 @@
 version: v1.0.0
 steps:
-- cmd: docker buildx build -t grimmy.azurecr.io/chatui2:latest . --build-arg BUILDKIT_SYNTAX=Dockerfile:1
-  context: https://github.com/Ubermm/chat-ui.git
-  displayName: Build Docker image with BuildKit
+- cmd: ['buildx', 'build', '--platform', 'linux/amd64', '--tag', 'grimmy.azurecr.io/chatui2:latest', '--push', '--build-arg', 'BUILDKIT_INLINE_CACHE=1']
+  displayName: Build Docker image using Buildx
+  environment:
+    DOCKER_BUILDKIT: '1'  # Set DOCKER_BUILDKIT environment variable to enable BuildKit
+  secrets:
+    - variableGroup: 'acrSecrets'
+      include: 'DOCKER_PASSWORD'  # Replace with your ACR password secret name
