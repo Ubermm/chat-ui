@@ -12,7 +12,7 @@ else
     echo "${DOTENV_LOCAL}" > "${ENV_LOCAL_PATH}"
 fi
 
-# Start local MongoDB instance if INCLUDE_DB is true    
+# Start local MongoDB instance if INCLUDE_DB is true
 if [ "${INCLUDE_DB}" = "true" ]; then
     echo "Starting local MongoDB instance"
     nohup mongod &
