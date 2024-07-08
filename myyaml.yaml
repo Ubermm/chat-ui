@@ -1,8 +1,7 @@
-version: v1.0.0
-variables:
-  DOCKER_BUILDKIT: '1'
+version: v1.1.0
 steps:
-- cmd: bash export DOCKER_BUILDKIT=1
-- cmd: bash docker build -t grimmy.azurecr.io/chatui2:latest . --build-arg BUILDKIT_INLINE_CACHE=1
-  displayName: Build Docker image with BuildKit
-  context: https://github.com/Ubermm/chat-ui.git
+  - build: -t $Registry/backstage:$ID -f packages/backend/Dockerfile .
+    env: 
+      - DOCKER_BUILDKIT=1
+  - push: 
+    - "$Registry/backstage:$ID"
