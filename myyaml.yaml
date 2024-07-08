@@ -4,6 +4,3 @@ steps:
   displayName: Build Docker image using Buildx
   environment:
     DOCKER_BUILDKIT: '1'  # Set DOCKER_BUILDKIT environment variable to enable BuildKit
-  secrets:
-    - variableGroup: 'acrSecrets'
-      include: 'DOCKER_PASSWORD'  # Replace with your ACR password secret name
