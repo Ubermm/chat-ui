@@ -8,7 +8,7 @@ FROM node:20 AS builder-production
 
 WORKDIR /app
 
-COPY --link --chown=1000 package-lock.json package.json ./
+COPY package-lock.json package.json ./
 RUN --mount=type=cache,target=/app/.npm \
     npm set cache /app/.npm && \
     npm ci --omit=dev
@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/app/.npm \
     npm set cache /app/.npm && \
     npm ci
 
-COPY --link --chown=1000 . .
+COPY . .
 
 RUN npm run build
 
@@ -51,9 +51,6 @@ RUN mkdir -p /data/db \
 # Final image stage
 FROM local_db_${INCLUDE_DB} AS final
 
-ARG INCLUDE_DB=false
-ENV INCLUDE_DB=${INCLUDE_DB}
-
 ARG APP_BASE=
 ARG PUBLIC_APP_COLOR=black
 ENV BODY_SIZE_LIMIT=15728640
@@ -71,16 +68,16 @@ ENV HOME=/home/user \
 WORKDIR /app
 
 RUN sed -i 's/\r$//' /app/entrypoint.sh  # Fix line endings issue
+RUN dos2unix /app/entrypoint.sh  # Convert entrypoint.sh to Unix format
 
 RUN touch /app/.env.local
-RUN dos2unix entrpoint.sh entrypoint.sh
-COPY --chown=1000 package.json /app/package.json
-COPY --chown=1000 .env /app/.env
-COPY --chown=1000 entrypoint.sh /app/entrypoint.sh
-COPY --chown=1000 gcp-*.json /app/
+COPY package.json /app/package.json
+COPY .env /app/.env
+COPY entrypoint.sh /app/entrypoint.sh
+COPY gcp-*.json /app/
 
-COPY --from=builder --chown=1000 /app/build /app/build
-COPY --from=builder --chown=1000 /app/node_modules /app/node_modules
+COPY --from=builder /app/build /app/build
+COPY --from=builder /app/node_modules /app/node_modules
 
 RUN npx playwright install
 
