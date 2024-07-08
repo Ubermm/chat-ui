@@ -1,3 +1,6 @@
+RUN ls -l /app/entrypoint.sh  # Check current permissions
+RUN id  # Print user and group information
+
 # Final image stage
 FROM local_db_${INCLUDE_DB} AS final
 
