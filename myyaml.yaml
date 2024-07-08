@@ -2,7 +2,7 @@ version: v1.0.0
 variables:
   DOCKER_BUILDKIT: '1'
 steps:
-- cmd: dockerd --experimental=true
-- cmd: docker build -t grimmy.azurecr.io/chatui2:latest . --build-arg BUILDKIT_INLINE_CACHE=1
+- cmd: bash dockerd --experimental=true
+- cmd: bash docker build -t grimmy.azurecr.io/chatui2:latest . --build-arg BUILDKIT_INLINE_CACHE=1
   displayName: Build Docker image with BuildKit
   context: https://github.com/Ubermm/chat-ui.git
