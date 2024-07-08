@@ -1,5 +1,5 @@
 version: v1.0.0
 steps:
-- cmd: docker buildx build -t grimmy.azurecr.io/chatui2:latest . --build-arg BUILDKIT_SYNTAX=docker/dockerfile:1
+- cmd: docker buildx build -t grimmy.azurecr.io/chatui2:latest . --build-arg BUILDKIT_SYNTAX=Dockerfile:1
   context: https://github.com/Ubermm/chat-ui.git
   displayName: Build Docker image with BuildKit
