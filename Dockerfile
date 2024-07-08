@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:experimental
+
 # Stage that installs the production dependencies
 FROM node:20 AS builder-production
 
