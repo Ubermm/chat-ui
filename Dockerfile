@@ -76,16 +76,13 @@ COPY .env /app/.env
 COPY entrypoint.sh /app/entrypoint.sh
 COPY gcp-*.json /app/
 
-COPY --from=builder /app/build /app/build
-COPY --from=builder /app/node_modules /app/node_modules
-
-RUN npx playwright install
+# Ensure the script is executable and then run it
+RUN /bin/bash -c "chmod +x /app/entrypoint.sh"
 
 USER root
+
 RUN npx playwright install-deps
 
 USER user
-
-RUN chmod +x /app/entrypoint.sh
 
 CMD ["/bin/bash", "-c", "/app/entrypoint.sh"]
