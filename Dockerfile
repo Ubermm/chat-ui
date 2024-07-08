@@ -74,6 +74,10 @@ RUN touch /app/.env.local
 COPY package.json /app/package.json
 COPY .env /app/.env
 COPY entrypoint.sh /app/entrypoint.sh
+
+# Adjust permissions before setting up the script
+RUN chmod +x /app/entrypoint.sh
+
 COPY gcp-*.json /app/
 
 COPY --from=builder /app/build /app/build
@@ -85,7 +89,5 @@ USER root
 RUN npx playwright install-deps
 
 USER user
-
-RUN chmod +x /app/entrypoint.sh
 
 CMD ["/bin/bash", "-c", "/app/entrypoint.sh"]
