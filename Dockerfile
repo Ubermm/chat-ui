@@ -49,7 +49,7 @@ RUN mkdir -p /data/db \
     && chown -R 1000:1000 /data/db
 
 # Final image stage
-FROM local_db_true AS final
+FROM local_db_${INCLUDE_DB} AS final
 
 ARG APP_BASE=
 ARG PUBLIC_APP_COLOR=black
@@ -60,27 +60,28 @@ RUN npm install -g dotenv-cli
 RUN userdel -r node \
     && useradd -m -u 1000 user
 
-USER user
-
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH
 
 WORKDIR /app
 
-# Convert entrypoint.sh to Unix format if needed
-RUN dos2unix /app/entrypoint.sh > /dev/null 2>&1 || true
-
-RUN touch /app/.env.local
 COPY package.json /app/package.json
 COPY .env /app/.env
 COPY entrypoint.sh /app/entrypoint.sh
 COPY gcp-*.json /app/
 
-USER root
+COPY --from=builder /app/build /app/build
+COPY --from=builder /app/node_modules /app/node_modules
 
+# Convert entrypoint.sh to Unix format if needed
+RUN dos2unix /app/entrypoint.sh
+
+RUN npx playwright install
+
+USER root
 RUN npx playwright install-deps
-# Ensure the script is executable and then run it
-RUN /bin/bash -c "chmod +x /app/entrypoint.sh"
+RUN chmod +x /app/entrypoint.sh
 
 USER user
+
 CMD ["/bin/bash", "-c", "/app/entrypoint.sh"]
