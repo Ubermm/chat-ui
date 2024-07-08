@@ -1,10 +1,6 @@
 version: v1.0.0
 steps:
-- task: Docker@2
-  inputs:
-    containerRegistry: 'grimmy'          # Replace with your ACR name
-    repository: 'chatui2'               # Replace with your image repository name (without tag)
-    command: 'build'
-    Dockerfile: '**/Dockerfile'         # Path to your Dockerfile relative to the repo root
-    arguments: '--build-arg ENVIRONMENT=production'  # Optional build arguments
-    enableBuildKit: true                # Enable Docker BuildKit
+- script: |
+    export DOCKER_BUILDKIT=1
+    docker build -t grimmy.azurecr.io/chatui2:latest .
+  displayName: Build Docker image with BuildKit
