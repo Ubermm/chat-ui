@@ -1,0 +1,10 @@
+version: v1.0.0
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'myacr'  # Replace with your ACR name
+    repository: 'myimage'       # Replace with your image repository name
+    command: 'build'
+    Dockerfile: '**/Dockerfile'  # Path to your Dockerfile relative to the repo root
+    arguments: '--build-arg ENVIRONMENT=production'  # Optional build arguments
+    enableBuildKit: true         # Enable Docker BuildKit
