@@ -38,7 +38,7 @@ FROM node:20-slim AS local_db_false
 FROM node:20-slim AS local_db_true
 
 RUN apt-get update \
-    && apt-get install -y gnupg curl dos2unix \
+    && apt-get install -y gnupg curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy MongoDB binaries from mongo stage
@@ -72,9 +72,6 @@ COPY gcp-*.json /app/
 
 COPY --from=builder /app/build /app/build
 COPY --from=builder /app/node_modules /app/node_modules
-
-# Convert entrypoint.sh to Unix format if needed
-RUN dos2unix /app/entrypoint.sh
 
 RUN npx playwright install
 
