@@ -1,7 +1,7 @@
 version: v1.1.0
 steps:
-  - build: -t $Registry/backstage:$ID -f Dockerfile .
+  - build: -t $Registry/chatui2:$ID -f Dockerfile .
     env: 
       - DOCKER_BUILDKIT=1
   - push: 
-    - "$Registry/backstage:$ID"
+    - "$Registry/chatui2:$ID"
