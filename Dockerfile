@@ -1,6 +1,3 @@
-RUN ls -l /app/entrypoint.sh  # Check current permissions
-RUN id  # Print user and group information
-
 # Final image stage
 FROM local_db_${INCLUDE_DB} AS final
 
@@ -28,6 +25,8 @@ COPY package.json /app/package.json
 COPY .env /app/.env
 COPY entrypoint.sh /app/entrypoint.sh
 
+RUN ls -l /app/entrypoint.sh  # Check current permissions
+RUN id  # Print user and group information
 # Adjust permissions with elevated privileges
 RUN chmod +x /app/entrypoint.sh
 
