@@ -77,6 +77,10 @@ RUN npx playwright install
 
 USER root
 RUN npx playwright install-deps
+# Remove Windows carriage return characters from entrypoint.sh
+RUN sed -i 's/\r$//' /app/entrypoint.sh
+
+# Ensure entrypoint.sh is executable
 RUN chmod +x /app/entrypoint.sh
 
 USER user
